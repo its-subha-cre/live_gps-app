@@ -5,7 +5,6 @@ from geopy.geocoders import Nominatim
 import folium
 import requests
 from folium.plugins import MarkerCluster
-import pyttsx3
 import threading
 
 # OpenRouteService API key and URL
@@ -117,12 +116,6 @@ def create_map(source, destination):
 
     return m, distance, duration, walking_duration, bus_duration, tourist_spots
 
-# Function to speak the message using pyttsx3
-def speak(message):
-    engine = pyttsx3.init()
-    engine.say(message)
-    engine.runAndWait()
-
 # Streamlit UI
 st.title("GPS Location Mapper")
 
@@ -152,18 +145,19 @@ if st.button("Create Map"):
         else:
             st.write("No tourist spots found near the destination.")
         
-        # Simulate tracking logic (based on user input or simulation)
-        # You can create a loop to periodically check if the user is on the track.
-        tracking_info = st.empty()  # Placeholder to show tracking info
-        tracking_info.write("Tracking your location...")
-
-        # Example of user tracking in periodic intervals (simulation)
-        time.sleep(5)  # Simulate waiting time
-
         # Simulated logic - assume the user is within the route
         message = "You are on the shortest path!"
+        tracking_info = st.empty()  # Placeholder to show tracking info
         tracking_info.write(message)
-        speak(message)  # Speak the message
+
+        # Inject JavaScript to trigger speech synthesis
+        st.components.v1.html(f"""
+            <script>
+                const message = "{message}"; // Get message
+                const speech = new SpeechSynthesisUtterance(message); // Create SpeechSynthesisUtterance
+                window.speechSynthesis.speak(speech); // Speak the message
+            </script>
+        """, height=0)
 
     except Exception as e:
         st.error(f"Error: {e}")
