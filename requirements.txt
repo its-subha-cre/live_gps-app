@@ -1,0 +1,6 @@
+streamlit
+geopy
+folium
+requests
+pyttsx3
+altair
