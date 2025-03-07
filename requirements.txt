@@ -1,5 +1,4 @@
-streamlit==1.18.0
-folium==0.14.0
-requests==2.28.1
-geopy==2.3.0
-altair
+streamlit
+folium
+requests
+geopy
